@@ -1,54 +1,86 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Frontend - Prueba Técnica LicitaLab
 
-Currently, two official plugins are available:
+Este proyecto es un frontend desarrollado con React, TS y Redux, diseñado para ofrecer una experiencia de usuario rápida y eficiente.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Características principales
 
-## Expanding the ESLint configuration
+- **React 19 con Vite** 
+- **TypeScript** para tipado estático
+- **Material UI** para los componentes.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Estructura del proyecto
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+frontend/
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── public
+│   └── vite.svg
+├── README.md
+├── src
+│   ├── api
+│   │   └── index.ts
+│   ├── app
+│   │   ├── features
+│   │   └── store.ts
+│   ├── App.css
+│   ├── AppRouting.tsx
+│   ├── assets
+│   │   └── react.svg
+│   ├── components
+│   │   ├── Calendar.tsx
+│   │   ├── Filters.tsx
+│   │   ├── Loading.tsx
+│   │   ├── OpportunitiesTable.tsx
+│   │   ├── PaginationTable.tsx
+│   │   ├── SideNav.tsx
+│   │   └── index.ts
+│   ├── index.css
+│   ├── index.tsx
+│   ├── interfaces
+│   │   └── opportunity.interface.ts
+│   ├── pages
+│   │   ├── FollowedOpportunitiesPage.tsx
+│   │   ├── OpportunitiesPage.tsx
+│   │   └── index.ts
+│   ├── utils
+│   └── vite-env.d.ts
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Requisitos previos
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Node.js (v20 o superior recomendado)
+- npm (v10 o superior)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Instalación
+
+1. Clona el repositorio
+```bash
+git clone https://github.com/matias-rojas-dev/prueba-tecnica-licitalab
 ```
+2. Accede a la carpeta frontend:
+```bash
+cd frontend
+```
+3. Instala las dependencias:
+```bash
+npm install
+```
+4. Debes crear un archivo .env y añadir la url del Backend:
+```code
+VITE_BACKEND_URL = http://localhost:3000
+```
+Si tu servidor está en otro puerto debes cambiar el del ejemplo por el que corresponde. Además, no olvides que debes tener arriba tu servicio antes de levantar el frontend.
+
+4. Levanta la aplicación:
+```bash
+npm run dev
+```
+5. La aplicación correrá en el puerto 5173

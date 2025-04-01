@@ -2,7 +2,7 @@ import axios from 'axios'
 import { IOpportunity } from '../interfaces/opportunity.interface'
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000/opportunities',
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/opportunities`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
