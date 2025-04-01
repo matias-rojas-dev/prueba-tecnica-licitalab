@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: licitalab
+      POSTGRES_DB: licitalab
+    ports:
+      - "5432:5432"
