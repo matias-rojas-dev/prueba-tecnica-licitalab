@@ -3,36 +3,52 @@ import { SideNav } from './components/SideNav'
 import { FollowedOpportunitiesPage, OpportunitiesPage } from './pages'
 import { Grid } from '@mui/material'
 import { Filters } from './components'
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import { getAllOpportunities, getFollowedOpportunities } from './api'
 import { useDispatch } from 'react-redux'
-import { setAllOpportunities } from './app/features/opportunity/allOpportunitiesSlice'
-import { setAllFollowedOpportunities } from './app/features/opportunity/followedOpportunitiesSlice'
+import {
+  setAllOpportunities,
+  setLoading,
+} from './app/features/opportunity/allOpportunitiesSlice'
+import {
+  setAllFollowedOpportunities,
+  setLoadingFollowedOpportunities,
+} from './app/features/opportunity/followedOpportunitiesSlice'
 
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     const fetchGetAllOpportunities = async () => {
-      const response = await getAllOpportunities()
-      dispatch(setAllOpportunities(response))
+      dispatch(setLoading(true))
+      try {
+        const response = await getAllOpportunities()
+        dispatch(setAllOpportunities(response))
+      } catch (error) {
+        console.log(error)
+      } finally {
+        dispatch(setLoading(false))
+      }
     }
     fetchGetAllOpportunities()
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
-    const fetchGetAllOpportunities = async () => {
+    const fetchGetFollowedOpportunities = async () => {
+      dispatch(setLoadingFollowedOpportunities(true))
       try {
         const response = await getFollowedOpportunities()
         dispatch(setAllFollowedOpportunities(response))
       } catch (error) {
         console.log(error)
+      } finally {
+        dispatch(setLoadingFollowedOpportunities(false))
       }
     }
-    fetchGetAllOpportunities()
-  }, [])
+    fetchGetFollowedOpportunities()
+  }, [dispatch])
 
   return (
-    <>
+    <Fragment>
       <SideNav />
       <Filters />
       <Grid
@@ -46,7 +62,7 @@ function App() {
           <Route path="/seguimiento" element={<FollowedOpportunitiesPage />} />
         </Routes>
       </Grid>
-    </>
+    </Fragment>
   )
 }
 

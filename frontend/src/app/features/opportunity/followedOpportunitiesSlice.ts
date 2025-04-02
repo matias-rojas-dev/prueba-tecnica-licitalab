@@ -3,16 +3,21 @@ import { IOpportunity } from '../../../interfaces/opportunity.interface'
 
 interface Props {
   items: IOpportunity[]
+  loadingFollowedOpportunities: boolean
 }
 
 const initialState: Props = {
   items: [],
+  loadingFollowedOpportunities: false,
 }
 
 const followedOpportunitiesSlice = createSlice({
   name: 'followedOpportunities',
   initialState,
   reducers: {
+    setLoadingFollowedOpportunities(state, action: PayloadAction<boolean>) {
+      state.loadingFollowedOpportunities = action.payload
+    },
     setAllFollowedOpportunities(state, action: PayloadAction<IOpportunity[]>) {
       state.items = action.payload
     },
@@ -33,6 +38,10 @@ const followedOpportunitiesSlice = createSlice({
   },
 })
 
-export const { follow, unfollow, setAllFollowedOpportunities } =
-  followedOpportunitiesSlice.actions
+export const {
+  follow,
+  unfollow,
+  setAllFollowedOpportunities,
+  setLoadingFollowedOpportunities,
+} = followedOpportunitiesSlice.actions
 export default followedOpportunitiesSlice.reducer

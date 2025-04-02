@@ -9,8 +9,10 @@ import {
   Paper,
   Typography,
   Box,
+  CircularProgress,
+  TextField,
 } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { IOpportunity } from '../interfaces/opportunity.interface'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -30,10 +32,10 @@ interface Props {
 
 export function OpportunitiesTable({ opportunities }: Props) {
   const dispatch = useDispatch()
-  const store = useSelector((state) => state)
-  console.log(store)
+  const [loadingId, setLoadingId] = useState<number | null>(null)
 
   const handleToggleFollow = async (opp: IOpportunity) => {
+    setLoadingId(opp.id)
     try {
       await updateFollowedOpportunity(opp.id)
       dispatch(toggleFollow(opp.id))
@@ -44,6 +46,8 @@ export function OpportunitiesTable({ opportunities }: Props) {
       }
     } catch (error) {
       console.error('Error al actualizar el seguimiento:', error)
+    } finally {
+      setLoadingId(null)
     }
   }
 
@@ -68,16 +72,24 @@ export function OpportunitiesTable({ opportunities }: Props) {
               <TableCell sx={{ color: '#E5E7EB', fontWeight: 600 }}>
                 Título
               </TableCell>
-              <TableCell sx={{ color: '#E5E7EB', fontWeight: 600 }}>
+              <TableCell
+                sx={{ color: '#E5E7EB', fontWeight: 600, textAlign: 'center' }}
+              >
                 Tipo
               </TableCell>
-              <TableCell sx={{ color: '#E5E7EB', fontWeight: 600 }}>
+              <TableCell
+                sx={{ color: '#E5E7EB', fontWeight: 600, textAlign: 'center' }}
+              >
                 Fecha Publicación
               </TableCell>
-              <TableCell sx={{ color: '#E5E7EB', fontWeight: 600 }}>
+              <TableCell
+                sx={{ color: '#E5E7EB', fontWeight: 600, textAlign: 'center' }}
+              >
                 Fecha Cierre
               </TableCell>
-              <TableCell sx={{ color: '#E5E7EB', fontWeight: 600 }}>
+              <TableCell
+                sx={{ color: '#E5E7EB', fontWeight: 600, textAlign: 'center' }}
+              >
                 Acción
               </TableCell>
             </TableRow>
@@ -93,32 +105,62 @@ export function OpportunitiesTable({ opportunities }: Props) {
                 }}
               >
                 <TableCell>{opp.title}</TableCell>
-                <TableCell>{opp.type}</TableCell>
-                <TableCell>
-                  {format(parseISO(opp.publish_date), 'dd/MM/yyyy')}
-                </TableCell>
-                <TableCell>
-                  {format(parseISO(opp.close_date), 'dd/MM/yyyy')}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant={opp.is_followed ? 'contained' : 'outlined'}
-                    color={opp.is_followed ? 'success' : 'primary'}
-                    startIcon={
-                      opp.is_followed ? (
-                        <FavoriteIcon />
-                      ) : (
-                        <FavoriteBorderIcon sx={{ color: 'inherit' }} />
-                      )
-                    }
-                    onClick={() => handleToggleFollow(opp)}
+                <TableCell
+                  sx={{
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography
                     sx={{
-                      textTransform: 'none',
-                      minWidth: 160,
+                      textTransform: 'capitalize',
+                      bgcolor: opp.type === 'tender' ? '#ef4444' : '#3b82f6',
+                      p: 1,
+                      borderRadius: 2,
+                      fontWeight: 600,
                     }}
                   >
-                    {opp.is_followed ? 'En seguimiento' : 'Seguir'}
-                  </Button>
+                    {opp.type}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  {format(parseISO(opp.publish_date), 'dd/MM/yyyy')}
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  {format(parseISO(opp.close_date), 'dd/MM/yyyy')}
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  {loadingId === opp.id ? (
+                    <Button
+                      variant={'outlined'}
+                      color={'primary'}
+                      disabled
+                      sx={{
+                        textTransform: 'none',
+                        minWidth: 160,
+                      }}
+                    >
+                      <CircularProgress size={25} />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant={opp.is_followed ? 'contained' : 'outlined'}
+                      color={opp.is_followed ? 'success' : 'primary'}
+                      startIcon={
+                        opp.is_followed ? (
+                          <FavoriteIcon />
+                        ) : (
+                          <FavoriteBorderIcon sx={{ color: 'inherit' }} />
+                        )
+                      }
+                      onClick={() => handleToggleFollow(opp)}
+                      sx={{
+                        textTransform: 'none',
+                        minWidth: 160,
+                      }}
+                    >
+                      {opp.is_followed ? 'En seguimiento' : 'Seguir'}
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
